@@ -127,3 +127,15 @@ On specific PHP configurations, the scanner may report a false positive when its
 This was reproduced on patched PHP 8.4.27 with `memory_limit` values from **2M to 32M**, and on PHP 8.3.36 at **128M** when `max_multipart_body_parts` is set to **2785 or higher**. The exact threshold may vary between builds.
 
 When PHP does not disclose its version, the scanner cannot distinguish this safe post-patch OOM from the vulnerable pre-patch behavior. Results should therefore be verified against the installed PHP version and any vendor backports
+
+## Site GLOSS GARAGE
+
+Ce dépôt contient aussi `site/` : le site vitrine et de demande de réservation
+GLOSS GARAGE (FastAPI + SQLite), indépendant du scanner ci-dessus.
+
+```bash
+docker compose -f docker-compose.base44.yml up -d   # http://localhost:3000
+```
+
+- Fonctionnement et structure : [`site/README.md`](site/README.md)
+- Éléments à compléter par le propriétaire : [`site/OWNER_TODO.md`](site/OWNER_TODO.md)

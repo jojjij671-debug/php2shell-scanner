@@ -1,0 +1,50 @@
+# Environnement de développement Base44 — site GLOSS GARAGE.
+# Le code est monté depuis le dépôt et servit par `uvicorn --reload` :
+# chaque modification de site/app est prise en compte sans reconstruction.
+
+services:
+  site:
+    image: python:3.12-slim
+    working_dir: /app/site
+    command:
+      - sh
+      - -ec
+      - |
+        pip install --no-cache-dir -r /app/site/requirements.txt
+        exec uvicorn app.main:app --reload --reload-dir /app/site/app --host 0.0.0.0 --port 8000
+    volumes:
+      - ./:/app
+      - bookings-data:/data
+    environment:
+      DATABASE_PATH: /data/bookings.db
+      WATCHFILES_FORCE_POLLING: "true"
+      PYTHONUNBUFFERED: "1"
+    env_file:
+      # Jetons fournis par le tableau de bord Base44 (ex. ADMIN_TOKEN).
+      - /run/base44/app.env
+    ports:
+      - "3000:8000"
+    labels:
+      base44.project: "GLOSS GARAGE"
+      base44.kind: "web"
+      base44.port: "3000"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - |
+          import sys, urllib.request
+          try:
+              urllib.request.urlopen("http://127.0.0.1:8000/", timeout=5).read(1)
+          except Exception as exc:
+              print("site indisponible:", exc)
+              sys.exit(1)
+      interval: 15s
+      timeout: 8s
+      retries: 4
+      start_period: 60s
+    restart: on-failure
+
+volumes:
+  bookings-data:

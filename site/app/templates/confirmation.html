@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Demande enregistrée — {{ site.name }}{% endblock %}
+{% block description %}Votre demande de réservation a bien été enregistrée chez {{ site.name }}.{% endblock %}
+{% block head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">Demande enregistrée</p>
+    <h1>Merci {{ booking.name }} !</h1>
+    <p class="lead">
+      Votre demande a bien été enregistrée sous la référence
+      <strong>{{ booking.reference }}</strong>. Elle n'est pas encore un rendez-vous
+      confirmé : le garage vous recontacte pour valider le créneau et le tarif.
+    </p>
+  </div>
+</section>
+
+<div class="wrap form-wrap">
+  <div class="summary-block">
+    <h2>Votre demande</h2>
+    <dl class="recap recap-static">
+      <div><dt>Référence</dt><dd>{{ booking.reference }}</dd></div>
+      <div><dt>Prestation</dt><dd>{{ booking.choice_label }}</dd></div>
+      {% if booking.options %}
+      <div><dt>Options</dt><dd>{{ booking.options }}</dd></div>
+      {% endif %}
+      <div><dt>Véhicule</dt><dd>{{ booking.vehicle_type }} — {{ booking.vehicle_model }}</dd></div>
+      <div><dt>Créneau souhaité</dt><dd>{{ booking.preferred_date|day }} à {{ booking.preferred_time }}</dd></div>
+      <div><dt>E-mail</dt><dd>{{ booking.email|mask_email }}</dd></div>
+      <div><dt>Téléphone</dt><dd>{{ booking.phone|mask_phone }}</dd></div>
+      {% if booking.notes %}
+      <div><dt>Remarques</dt><dd>{{ booking.notes }}</dd></div>
+      {% endif %}
+    </dl>
+  </div>
+
+  <div class="summary-block">
+    <h2>La prochaine étape</h2>
+    <ol class="steps steps-compact">
+      <li>
+        <h3>Le garage vérifie le créneau</h3>
+        <p>Votre créneau souhaité est comparé aux disponibilités réelles.</p>
+      </li>
+      <li>
+        <h3>Vous recevez la confirmation</h3>
+        <p>Le rendez-vous et le tarif vous sont confirmés par e-mail ou par téléphone.</p>
+      </li>
+      <li>
+        <h3>Vous venez au rendez-vous</h3>
+        <p>La prestation est réalisée au tarif confirmé, réglée directement au garage.</p>
+      </li>
+    </ol>
+    <p class="notice notice-inline">
+      <strong>{{ payment_note }}</strong> Aucune donnée bancaire ne vous sera demandée sur ce site.
+    </p>
+  </div>
+
+  <div class="summary-block">
+    <h2>Modifier ou annuler</h2>
+    <p>
+      Contactez le garage en indiquant votre référence <strong>{{ booking.reference }}</strong>.
+      L'annulation est sans frais tant que le rendez-vous n'est pas confirmé.
+    </p>
+    <p><a href="/conditions">Conditions de réservation, d'annulation et de remboursement</a></p>
+  </div>
+
+  <p class="form-foot">
+    <a href="/">Retour à l'accueil</a> · <a href="/reservation">Faire une autre demande</a>
+  </p>
+</div>
+{% endblock %}

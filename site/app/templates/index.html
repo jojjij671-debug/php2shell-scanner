@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block title %}{{ site.name }} — {{ site.tagline }} et réservation en ligne{% endblock %}
+{% block description %}{{ site.name }} : {{ site.tagline|lower }}. Découvrez les prestations, comparez les forfaits et demandez un créneau en quelques minutes. Aucun paiement en ligne.{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="wrap hero-inner">
+    <p class="eyebrow">{{ site.name }}</p>
+    <h1>Un véhicule impeccable, un rendez-vous simple.</h1>
+    <p class="lead">
+      Choisissez une prestation, indiquez votre véhicule et le créneau qui vous arrange.
+      Le garage confirme le rendez-vous et le tarif avant l'intervention.
+    </p>
+    <p class="actions">
+      <a class="btn btn-primary btn-lg" href="/reservation">Demander un créneau</a>
+      <a class="btn btn-ghost btn-lg" href="#prestations">Voir les prestations</a>
+    </p>
+    <ul class="chips">
+      <li>Demande sans engagement</li>
+      <li>Aucun paiement en ligne</li>
+      <li>Confirmation par le garage</li>
+    </ul>
+  </div>
+</section>
+
+<section id="prestations" class="section" aria-labelledby="prestations-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Prestations</p>
+      <h2 id="prestations-title">Choisissez ce dont votre véhicule a besoin</h2>
+      <p class="section-lead">
+        Chaque fiche détaille le contenu de la prestation. Les prix sont définis par le
+        garage ; lorsqu'ils ne sont pas encore publiés, ils sont confirmés avec vous
+        avant l'intervention.
+      </p>
+    </div>
+
+    {% if prices_missing %}
+    <p class="notice">
+      <strong>Tarifs en cours de publication.</strong> Le contenu de chaque prestation est
+      indiqué ci-dessous. Le prix exact vous est confirmé avant l'intervention : aucun
+      prix estimé n'est affiché sur ce site.
+    </p>
+    {% endif %}
+
+    <ul class="grid grid-3 cards">
+      {% for service in services %}
+      <li class="card">
+        <h3>{{ service.name }}</h3>
+        <p class="card-summary">{{ service.summary }}</p>
+        <ul class="includes">
+          {% for item in service.includes %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+        <div class="card-foot">
+          <p class="price">
+            {% if service.price %}{{ service.price }}{% else %}<span class="todo">Tarif à définir</span>{% endif %}
+            {% if service.duration %}<span class="duration">{{ service.duration }}</span>{% endif %}
+          </p>
+          <a class="btn btn-outline" href="/reservation?service=service:{{ service.slug }}">
+            Réserver<span class="sr-only"> — {{ service.name }}</span>
+          </a>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section id="forfaits" class="section section-alt" aria-labelledby="forfaits-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Forfaits</p>
+      <h2 id="forfaits-title">Des formules qui regroupent plusieurs prestations</h2>
+      <p class="section-lead">
+        Un forfait reprend simplement les prestations ci-dessus, réunies en une seule
+        visite. Vous pouvez ajouter des options au moment de la réservation.
+      </p>
+    </div>
+
+    <ul class="grid grid-3 cards">
+      {% for package in packages %}
+      <li class="card card-featured">
+        <h3>{{ package.name }}</h3>
+        <p class="card-summary">{{ package.summary }}</p>
+        <ul class="includes">
+          {% for item in package.includes %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+        <div class="card-foot">
+          <p class="price">
+            {% if package.price %}{{ package.price }}{% else %}<span class="todo">Tarif à définir</span>{% endif %}
+            {% if package.duration %}<span class="duration">{{ package.duration }}</span>{% endif %}
+          </p>
+          <a class="btn btn-primary" href="/reservation?service=forfait:{{ package.slug }}">
+            Demander ce forfait<span class="sr-only"> — {{ package.name }}</span>
+          </a>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section id="options" class="section" aria-labelledby="options-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Options</p>
+      <h2 id="options-title">Compléments à ajouter à votre réservation</h2>
+      <p class="section-lead">
+        Ces options se sélectionnent dans le formulaire, à l'étape de la prestation.
+      </p>
+    </div>
+    <ul class="option-list">
+      {% for option in options %}
+      <li>
+        <div>
+          <h3>{{ option.name }}</h3>
+          <p class="muted">{{ option.summary }}</p>
+        </div>
+        <p class="price">
+          {% if option.price %}{{ option.price }}{% else %}<span class="todo">Tarif à définir</span>{% endif %}
+        </p>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section id="deroulement" class="section section-dark" aria-labelledby="deroulement-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Déroulement</p>
+      <h2 id="deroulement-title">Comment se passe une réservation</h2>
+    </div>
+    <ol class="steps">
+      <li>
+        <h3>Vous composez votre demande</h3>
+        <p>Prestation ou forfait, véhicule, créneau souhaité et coordonnées. Deux minutes, sans engagement.</p>
+      </li>
+      <li>
+        <h3>Le garage confirme</h3>
+        <p>Vous êtes recontacté avec les coordonnées que vous avez indiquées : le rendez-vous et le tarif sont confirmés.</p>
+      </li>
+      <li>
+        <h3>Vous venez au rendez-vous</h3>
+        <p>La prestation est réalisée au tarif confirmé. Le règlement est convenu directement avec le garage.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="engagements-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Transparence</p>
+      <h2 id="engagements-title">Ce que vous pouvez vérifier avant de réserver</h2>
+    </div>
+    <ul class="grid grid-3 trust">
+      <li>
+        <h3>Le contenu est détaillé</h3>
+        <p>Chaque prestation liste ce qui est inclus, sans formule floue.</p>
+      </li>
+      <li>
+        <h3>Aucun paiement en ligne</h3>
+        <p>Pas d'acompte, pas de carte bancaire demandée sur ce site. Le règlement se fait avec le garage.</p>
+      </li>
+      <li>
+        <h3>Vos données restent utiles</h3>
+        <p>Seules les informations nécessaires à votre demande sont collectées, et elles ne servent qu'à cela.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section id="faq" class="section section-alt" aria-labelledby="faq-title">
+  <div class="wrap narrow">
+    <div class="section-head">
+      <p class="eyebrow">Questions fréquentes</p>
+      <h2 id="faq-title">Avant de réserver</h2>
+    </div>
+    <div class="faq">
+      {% for item in faq %}
+      <details>
+        <summary>{{ item.q }}</summary>
+        <p>{{ item.a }}</p>
+      </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="section" aria-labelledby="contact-title">
+  <div class="wrap contact-block">
+    <div>
+      <p class="eyebrow">Contact</p>
+      <h2 id="contact-title">Joindre {{ site.name }}</h2>
+      <p class="lead">
+        Une question sur une prestation ou sur votre véhicule ? Contactez directement le garage.
+      </p>
+      <p class="actions">
+        <a class="btn btn-primary" href="/reservation">Demander un créneau</a>
+        <a class="btn btn-outline" href="/conditions">Conditions de réservation</a>
+      </p>
+    </div>
+    <div class="contact-card">
+      {% include "_contact.html" %}
+    </div>
+  </div>
+</section>
+
+<div class="mobile-cta">
+  <a class="btn btn-primary" href="/reservation">Demander un créneau</a>
+</div>
+{% endblock %}
+
+{% block head %}
+<script type="application/ld+json">{{ jsonld_business|safe }}</script>
+<script type="application/ld+json">{{ jsonld_faq|safe }}</script>
+{% endblock %}

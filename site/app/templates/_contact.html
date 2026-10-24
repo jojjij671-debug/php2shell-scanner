@@ -1,0 +1,34 @@
+<ul class="contact-list">
+  <li>
+    <span class="contact-label">Téléphone</span>
+    {% if site.phone %}
+      <a href="tel:{{ site.phone|replace(' ', '') }}">{{ site.phone }}</a>
+    {% else %}
+      <span class="todo">à compléter</span>
+    {% endif %}
+  </li>
+  <li>
+    <span class="contact-label">E-mail</span>
+    {% if site.email %}
+      <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+    {% else %}
+      <span class="todo">à compléter</span>
+    {% endif %}
+  </li>
+  <li>
+    <span class="contact-label">Adresse</span>
+    {% if site.address %}
+      <span>{{ site.address }}</span>
+    {% else %}
+      <span class="todo">à compléter</span>
+    {% endif %}
+  </li>
+  <li>
+    <span class="contact-label">Horaires</span>
+    {% if site.hours %}
+      <span>{{ site.hours }}</span>
+    {% else %}
+      <span class="todo">à compléter</span>
+    {% endif %}
+  </li>
+</ul>

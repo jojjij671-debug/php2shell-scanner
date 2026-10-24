@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Conditions de réservation — {{ site.name }}{% endblock %}
+{% block description %}Conditions de réservation, d'annulation et de remboursement chez {{ site.name }} : ce que couvre une demande, prix, annulation et données personnelles.{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">Conditions</p>
+    <h1>Conditions de réservation</h1>
+    <p class="lead">
+      Ce qui s'applique à une demande envoyée depuis ce site. À lire avant de confirmer
+      votre réservation.
+    </p>
+  </div>
+</section>
+
+<div class="wrap narrow prose">
+  {% for section in conditions %}
+  <section id="section-{{ loop.index }}" class="prose-section">
+    <h2>{{ loop.index }}. {{ section.title }}</h2>
+    {% for paragraph in section.paragraphs %}
+    <p>{{ paragraph }}</p>
+    {% endfor %}
+  </section>
+  {% endfor %}
+
+  <section id="section-contact" class="prose-section">
+    <h2>{{ conditions|length + 1 }}. Contact</h2>
+    <p>Pour toute question sur une demande ou ces conditions, contactez {{ site.name }} :</p>
+    {% include "_contact.html" %}
+  </section>
+
+  <p class="actions">
+    <a class="btn btn-primary" href="/reservation">Demander un créneau</a>
+    <a class="btn btn-outline" href="/">Retour à l'accueil</a>
+  </p>
+</div>
+{% endblock %}

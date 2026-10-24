@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Page introuvable — {{ site.name }}{% endblock %}
+{% block description %}Cette page n'existe pas. Retournez à l'accueil de {{ site.name }}.{% endblock %}
+{% block content %}
+<section class="wrap page-head">
+  <p class="eyebrow">Erreur 404</p>
+  <h1>Cette page n'existe pas</h1>
+  <p class="lead">Le lien est peut-être ancien ou mal orthographié.</p>
+  <p class="actions">
+    <a class="btn btn-primary" href="/">Retour à l'accueil</a>
+    <a class="btn btn-outline" href="/reservation">Demander un créneau</a>
+  </p>
+</section>
+{% endblock %}

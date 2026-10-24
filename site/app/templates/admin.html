@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Demandes de réservation — {{ site.name }}{% endblock %}
+{% block description %}Liste des demandes de réservation reçues.{% endblock %}
+{% block head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">Administration</p>
+    <h1>Demandes de réservation</h1>
+    <p class="lead">{{ bookings|length }} demande(s), de la plus récente à la plus ancienne.</p>
+  </div>
+</section>
+
+<div class="wrap admin">
+  {% if not bookings %}
+  <p class="notice notice-inline">Aucune demande pour le moment.</p>
+  {% else %}
+  <div class="table-scroll">
+    <table>
+      <caption class="sr-only">Demandes de réservation reçues</caption>
+      <thead>
+        <tr>
+          <th scope="col">Référence</th>
+          <th scope="col">Reçue le</th>
+          <th scope="col">Prestation</th>
+          <th scope="col">Véhicule</th>
+          <th scope="col">Créneau souhaité</th>
+          <th scope="col">Client</th>
+          <th scope="col">Remarques</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in bookings %}
+        <tr>
+          <td>{{ item.reference }}</td>
+          <td>{{ item.created_at[:16]|replace('T', ' ') }}</td>
+          <td>{{ item.choice_label }}{% if item.options %}<br><span class="muted">{{ item.options }}</span>{% endif %}</td>
+          <td>{{ item.vehicle_type }}<br><span class="muted">{{ item.vehicle_model }}</span></td>
+          <td>{{ item.preferred_date|day }}<br><span class="muted">{{ item.preferred_time }}</span></td>
+          <td>{{ item.name }}<br><span class="muted">{{ item.email }}<br>{{ item.phone }}</span></td>
+          <td>{{ item.notes or '—' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [
+    {
+      "name": "ADMIN_TOKEN",
+      "description": "Mot de passe de la page /admin (liste des demandes de réservation). Facultatif : sans valeur, la page /admin reste désactivée.",
+      "requiredAtBoot": false
+    }
+  ]
+}
